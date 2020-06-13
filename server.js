@@ -28,6 +28,10 @@ if (process.env.Node_ENV === 'development') {
     //Cors it's allow to deal with react for localhost at port 3000
 }
 
+if (process.env.Node_ENV === 'production') {
+    server.use(express.static("client/buid"))
+}
+
 //Load all routes
 const authRouter = require('./routes/auth.route')
 const taskRouter = require('./routes/task.route')
