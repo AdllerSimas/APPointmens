@@ -1,2 +1,2 @@
 # APPointmens
-It's a app to do work appointments or tasks
+It's a MERN app to do work appointments or tasks
