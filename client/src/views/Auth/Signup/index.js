@@ -61,8 +61,8 @@ export default function Signup() {
                     
                 
                 }).catch(err => {
-                    console.log('erro na requisição ao BD')
-                    toast.error(err.response.data.errors)
+                    
+                    toast.error("The user already exists! Or user used the social medias to sign up!")
                 })
         
             } else {

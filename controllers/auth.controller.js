@@ -11,7 +11,8 @@ const { errorHandler } = require('../helpers/dbErrorHandling')
 const sgMail = require('@sendgrid/mail')
 sgMail.setApiKey(process.env.MAIL_KEY)
 
-exports.registerController = (req, res) => {
+exports.registerController = async (req, res) => {
+    
     const { name, email, password } = req.body
     const errors = validationResult(req)
 
@@ -22,7 +23,7 @@ exports.registerController = (req, res) => {
         })
 
     } else {
-        User.findOne({
+        await User.findOne({
             email
         }).exec((err, user) => {
             if (user) {
@@ -60,12 +61,15 @@ exports.registerController = (req, res) => {
         `
     }
 
-    sgMail.send(emailData).then(sent => {
+    const sendEmail = await emailData
+
+    sgMail.send(sendEmail).then(sent => {
+        
         return res.json({
             message: `Email has been sent to ${email}`
         })
     }).catch(err => {
-        console.log(err)
+        
         return res.status(400).json({
             error:errorHandler(err)
         })
@@ -79,7 +83,7 @@ exports.registerController = (req, res) => {
 exports.activationController = (req, res) => {
     
     const {token} = req.body
-    console.log(token)
+    
     if(token) {
         //Verify the token is valid or not or expired
         jwt.verify(token, process.env.JWT_ACCOUNT_ACTIVATION, (err, decoded) => {
@@ -92,10 +96,7 @@ exports.activationController = (req, res) => {
                     // Get Name, Email, Password from token 
                     const {name, email, password} = jwt.decode(token)
 
-                    console.log(email)
-                    console.log(name)
-                    console.log(password)
-                    
+                      
                     const user = new User({
                         name, 
                         email,
@@ -104,10 +105,11 @@ exports.activationController = (req, res) => {
 
                     user.save((err, user)=> {
                         if(err) {
-                            console.log('Save error', errorHandler(err))
+                            
                             return res.status(401).json({
-                            error: errorHandler(err)
-                        })
+                                error: errorHandler(err)
+                            })
+
                         } else {
 
                             return res.json({
@@ -123,9 +125,11 @@ exports.activationController = (req, res) => {
         })
 
     } else {
+
         return res.json({
             message:'Error! Try again!'
         })
+        
     }
 } 
 

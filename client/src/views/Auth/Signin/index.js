@@ -136,7 +136,7 @@ const SignIn = ({history}) => {
                     
                 
                 }).catch(err => {
-                    toast.error(err)
+                    toast.error('User or Password incorrects!')
                 })
         
         } else {
