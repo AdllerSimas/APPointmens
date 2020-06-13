@@ -2,9 +2,9 @@
   "name": "APPointmentsBackend",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "server.js",
   "scripts": {
-    "start": "NODE_ENV=production node server",
+    "start": "node server",
     "dev": "nodemon server"
   },
   "keywords": [],
